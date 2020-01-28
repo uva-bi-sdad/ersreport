@@ -51,7 +51,7 @@ for(i in 2:length(state_fips)){
   acs <- rbind(acs, tmp)
 }
 
-# write_rds(acs, "./data/working/acs2014-18_raw.Rds")
+# write_rds(acs, "./data/working/acs2014-18_bband_raw.Rds")
 
 # Calculate variable min & max (ACS defaults to 90% confidence interval)
 # For alternative CIs, see https://www.census.gov/content/dam/Census/programs-surveys/acs/guidance/training-presentations/20180418_MOE.pdf
@@ -196,4 +196,4 @@ data <- data %>% mutate(urbanicity = case_when((primRUCA == 1 | primRUCA == 2 | 
                                                (primRUCA == 99 | is.na(primRUCA)) ~ NA_character_))
 data$urbanicity <- factor(data$urbanicity, levels = c("Rural", "Small town", "Micropolitan", "Metropolitan"))
 
-# write_rds(data, "./data/working/joined.Rds")
+# write_rds(data, "./data/working/acs_fcc_ruca.Rds")
