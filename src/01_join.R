@@ -51,7 +51,7 @@ for(i in 2:length(state_fips)){
   acs <- rbind(acs, tmp)
 }
 
-# write_rds(acs, "./data/working/acs2014-18_bband_raw.Rds")
+# write_rds(acs, "./rivanna_data/working/acs2014-18_bband_raw.Rds")
 
 # Calculate variable min & max (ACS defaults to 90% confidence interval)
 # For alternative CIs, see https://www.census.gov/content/dam/Census/programs-surveys/acs/guidance/training-presentations/20180418_MOE.pdf
@@ -65,7 +65,7 @@ acs <- acs %>% mutate(bbandmin = ifelse(bbandmin < 0, 0, bbandmin))
 # Top-code where bbandmax>1 since coverage cannot be above 1. 762 cases.
 acs <- acs %>% mutate(bbandmax = ifelse(bbandmax > 1, 1, bbandmax))
 
-# write_rds(acs, "./data/working/acs2014-18_calc.Rds")
+# write_rds(acs, "./rivanna_data/working/acs2014-18_calc.Rds")
 
 #
 # FCC: Number of subscriptions per 1,000 households -------------------------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ acs <- acs %>% mutate(bbandmax = ifelse(bbandmax > 1, 1, bbandmax))
 # 5     800 < x
 
 # Read in
-fcc <- read_csv("./data/original/tract_map_dec_2016.csv", col_names = TRUE, cols(tractcode = "c"))
+fcc <- read_csv("./rivanna_data/original/tract_map_dec_2016.csv", col_names = TRUE, cols(tractcode = "c"))
 
 # Recode
 fcc <- fcc %>% mutate(conn10min = case_when(pcat_10x1 == 0 ~ 0,
@@ -166,7 +166,7 @@ data <- data %>% filter(!is.na(bband) & !is.na(connmin))
 # 99 Not coded: Census tract has zero population and no rural-urban identifier information
 
 # Read in, skip row #1 because it is a note
-ruca <- read_excel("./data/original/ruca2010revised.xlsx", col_names = TRUE, progress = readxl_progress(), skip = 1)
+ruca <- read_excel("./rivanna_data/original/ruca2010revised.xlsx", col_names = TRUE, progress = readxl_progress(), skip = 1)
 
 names(ruca)[1] <- "StateCounty"
 names(ruca)[2] <- "State"
@@ -196,4 +196,4 @@ data <- data %>% mutate(urbanicity = case_when((primRUCA == 1 | primRUCA == 2 | 
                                                (primRUCA == 99 | is.na(primRUCA)) ~ NA_character_))
 data$urbanicity <- factor(data$urbanicity, levels = c("Rural", "Small town", "Micropolitan", "Metropolitan"))
 
-# write_rds(data, "./data/working/acs_fcc_ruca.Rds")
+# write_rds(data, "./rivanna_data/working/acs_fcc_ruca.Rds")

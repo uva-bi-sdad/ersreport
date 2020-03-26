@@ -47,22 +47,22 @@ countOverlaps(test_acs[3], test_fcc[3], type = "within")
 #
 
 # ACS is completely within FCC 10
-# overlap_acswithinfcc10 <- as.data.frame(countOverlaps(test_acs[1], test_fcc10[1]), type = "within")
-# for(i in 2:length(test_acs@start)){
-#   tmp <- countOverlaps(test_acs[i], test_fcc10[i], type = "within")
-#   overlap_acswithinfcc10 <- rbind(overlap_acswithinfcc10, tmp)
-# }
-# names(overlap_acswithinfcc10)[1] <- "acs_within_fcc10"
-# overlap_acswithinfcc10$acs_within_fcc10 <- as.factor(overlap_acswithinfcc10$acs_within_fcc10)
-# 
-# # ACS is completely within FCC200
-# overlap_acswithinfcc200 <- as.data.frame(countOverlaps(test_acs[1], test_fcc200[1]), type = "within")
-# for(i in 2:length(test_acs@start)){
-#   tmp <- countOverlaps(test_acs[i], test_fcc200[i], type = "within")
-#   overlap_acswithinfcc200 <- rbind(overlap_acswithinfcc200, tmp)
-# }
-# names(overlap_acswithinfcc200)[1] <- "acs_within_fcc200"
-# overlap_acswithinfcc200$acs_within_fcc200 <- as.factor(overlap_acswithinfcc200$acs_within_fcc200)
+overlap_acswithinfcc10 <- as.data.frame(countOverlaps(test_acs[1], test_fcc10[1]), type = "within")
+ for(i in 2:length(test_acs@start)){
+   tmp <- countOverlaps(test_acs[i], test_fcc10[i], type = "within")
+   overlap_acswithinfcc10 <- rbind(overlap_acswithinfcc10, tmp)
+ }
+ names(overlap_acswithinfcc10)[1] <- "acs_within_fcc10"
+ overlap_acswithinfcc10$acs_within_fcc10 <- as.factor(overlap_acswithinfcc10$acs_within_fcc10)
+ 
+# ACS is completely within FCC200
+overlap_acswithinfcc200 <- as.data.frame(countOverlaps(test_acs[1], test_fcc200[1]), type = "within")
+ for(i in 2:length(test_acs@start)){
+   tmp <- countOverlaps(test_acs[i], test_fcc200[i], type = "within")
+   overlap_acswithinfcc200 <- rbind(overlap_acswithinfcc200, tmp)
+ }
+ names(overlap_acswithinfcc200)[1] <- "acs_within_fcc200"
+ overlap_acswithinfcc200$acs_within_fcc200 <- as.factor(overlap_acswithinfcc200$acs_within_fcc200)
 
 # ACS is completely within FCC10min-FCC200max
 overlap_acswithinfcc <- as.data.frame(countOverlaps(test_acs[1], test_fcc[1]), type = "within")
@@ -83,10 +83,10 @@ overlap_geo <- as.data.frame(data$GEOID)
 names(overlap_geo)[1] <- "GEOID"
 overlap_geo$GEOID <- as.character(data$GEOID)
 
-overlap_df <- cbind(overlap_geo, overlap_acswithinfcc)
+overlap_df <- cbind(overlap_geo, overlap_acswithinfcc, overlap_acswithinfcc200, overlap_acswithinfcc10)
 
 # Left join with data (that has geography)
 data_int <- left_join(data, overlap_df, by = "GEOID")
 
 # Write
-# write_rds(acs, "./data/working/data_int.Rds")
+# write_rds(data_int, "./rivanna_data/working/data_int.Rds")
