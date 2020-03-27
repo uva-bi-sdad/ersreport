@@ -1,3 +1,4 @@
+# Note: There are no congruent tracts that had no urbanicity information (e.g. acs_within_fcc10 == 1 & urbanicity == NA).
 # Add conditional urbanicity indicators for plots
 data_int <- data_int %>% mutate(urban_fcc200 = case_when(acs_within_fcc200 == 0 ~ NA_character_,
                                                          acs_within_fcc200 == 1 & urbanicity == "Rural" ~ "Rural", 
@@ -18,7 +19,8 @@ data_int$urban_fcc200 <- factor(data_int$urban_fcc200, levels = c("Rural", "Smal
 data_int$urban_fcc10 <- factor(data_int$urban_fcc10, levels = c("Rural", "Small town", "Micropolitan", "Metropolitan"))
 data_int$urban_any <- factor(data_int$urban_any, levels = c("Rural", "Small town", "Micropolitan", "Metropolitan"))
 
-# write_rds(data_int, "./data/working/intervals/data_int.Rds")
+# write_rds(data_int, "./rivanna_data/working/data_int.Rds")
+
 
 #
 # Select data -------------------------------------------------------------------------------------
@@ -181,15 +183,16 @@ plot_10mbps <- plot_main +
 ggsave("plot_10mbps.png", plot = plot_10mbps, device = "png", path = "./docs",
        scale = 2, width = 120, height = 80, units = "mm", dpi = 300)
 
+
 #
 # Check urbanicity ------------------------------------------------------------------
 #
 
-# Urbanicity not coded for 84 tracts
+# Urbanicity not coded for 84 tracts, but congruent tracts all have urbanicity information.
 
 # Urbanicity of min10 - max200 congruence
 table(data_int$acs_within_fcc)
-table(data_int$acs_within_fcc, data_int$urbanicity)
+table(data_int$acs_within_fcc, data_int$urbanicity, useNA = "always") # congruent tracts all have urbanicity information.
 round(prop.table(table(data_int$acs_within_fcc, data_int$urbanicity)), 4)
 
 round(prop.table(table(data_int$urbanicity, data_int$acs_within_fcc), margin = 2), 4)
